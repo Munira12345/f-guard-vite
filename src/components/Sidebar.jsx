@@ -10,17 +10,20 @@ function Sidebar({ activePage, setActivePage }) {
   ];
 
   return (
-    <div className="sidebar">
+    <div className="sidebar dark-sidebar">
       <h2 className="sidebar-title">ForestGuard KE</h2>
-      <ul>
-        {menuItems.map(item => (
+
+      <ul className="sidebar-menu">
+        {menuItems.map((item) => (
           <li
             key={item.name}
-            className={activePage === item.name ? "active" : ""}
+            className={`sidebar-item ${
+              activePage === item.name ? "active" : ""
+            }`}
             onClick={() => setActivePage(item.name)}
           >
             <span className="icon">{item.icon}</span>
-            {item.name}
+            <span className="label">{item.name}</span>
           </li>
         ))}
       </ul>

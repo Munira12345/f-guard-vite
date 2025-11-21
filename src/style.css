@@ -76,3 +76,63 @@ body, html, #root {
 .card-default {
   border-left: 4px solid #3f3f3f;
 }
+/* DARK SIDEBAR --------------------------------------- */
+.dark-sidebar {
+  width: 230px;
+  background: #0d1619; /* deep charcoal */
+  color: #e8fdf0;      /* minty light */
+  padding: 25px 20px;
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.35);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sidebar-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 25px;
+  letter-spacing: 0.5px;
+  color: #b0ffd4; /* soft mint accent */
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 10px;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #c2e7d0;
+  transition: 0.2s ease;
+  opacity: 0.85;
+}
+
+.sidebar-item:hover {
+  background: rgba(0, 255, 180, 0.12);
+  opacity: 1;
+}
+
+.sidebar-item.active {
+  background: rgba(0, 255, 180, 0.18);
+  border-left: 4px solid #00d47e; /* neon green highlight */
+  padding-left: 6px;
+  opacity: 1;
+  color: #eafff3;
+  box-shadow: 0 0 12px rgba(0, 255, 150, 0.18);
+}
+
+.icon {
+  font-size: 1.2rem;
+  display: flex;
+  width: 24px;
+}
+
+.label {
+  flex: 1;
+}
