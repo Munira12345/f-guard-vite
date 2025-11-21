@@ -1,59 +1,67 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../Alerts.css";
-
-
+import apiService from "../services/api";
 
 const filters = ["All Alerts", "New", "Investigating", "Resolved", "False Positive"];
 
-const sampleAlerts = [
-  {
-    id: 1,
-    image: "/images/alert1.jpg",
-    title: "Mau Complex, Nakuru County",
-    coords: "-0.4833, 35.6167",
-    date: "2025-11-17",
-    time: "09:23 AM",
-    confidence: 94,
-    area: "12.4 ha",
-    status: "New",
-  },
-  {
-    id: 2,
-    image: "/images/alert2.jpg",
-    title: "Aberdare Range, Nyandarua County",
-    coords: "-0.4000, 36.7167",
-    date: "2025-11-17",
-    time: "07:15 AM",
-    confidence: 87,
-    area: "8.2 ha",
-    status: "Investigating",
-  },
-  {
-    id: 3,
-    image: "/images/alert3.jpg",
-    title: "Kakamega Forest, Kakamega County",
-    coords: "0.2667, 34.8667",
-    date: "2025-11-16",
-    time: "03:42 PM",
-    confidence: 91,
-    area: "15.6 ha",
-    status: "New",
-  },
-];
-
 export default function Alerts() {
   const [selectedFilter, setSelectedFilter] = useState("All Alerts");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [alerts, setAlerts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const filteredAlerts =
-    selectedFilter === "All Alerts"
-      ? sampleAlerts
-      : sampleAlerts.filter((a) => a.status === selectedFilter);
+  useEffect(() => {
+    fetchAlerts();
+  }, [selectedFilter, searchQuery]);
+
+  const fetchAlerts = async () => {
+    try {
+      setLoading(true);
+      const data = await apiService.getAlerts({
+        status: selectedFilter,
+        search: searchQuery
+      });
+      setAlerts(data);
+      setError(null);
+    } catch (err) {
+      console.error('Error fetching alerts:', err);
+      setError('Failed to load alerts');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleStatusUpdate = async (alertId, newStatus) => {
+    try {
+      await apiService.updateAlert(alertId, { status: newStatus });
+      // Refresh alerts after update
+      fetchAlerts();
+    } catch (err) {
+      console.error('Error updating alert:', err);
+      alert('Failed to update alert status');
+    }
+  };
+
+  if (loading && alerts.length === 0) {
+    return (
+      <div className="alerts-page">
+        <h1 className="alerts-title">All Alerts</h1>
+        <p>Loading alerts...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="alerts-page">
-
       <h1 className="alerts-title">All Alerts</h1>
-      <p className="alerts-count">{filteredAlerts.length} alerts found</p>
+      <p className="alerts-count">{alerts.length} alerts found</p>
+
+      {error && <p style={{ color: 'red' }}>{error}</p>}
 
       {/* Search + Filters Row */}
       <div className="alerts-toolbar">
@@ -61,6 +69,8 @@ export default function Alerts() {
           type="text"
           placeholder="Search by county or forest name..."
           className="alerts-search"
+          value={searchQuery}
+          onChange={handleSearchChange}
         />
 
         <div className="alerts-filter-group">
@@ -80,9 +90,8 @@ export default function Alerts() {
 
       {/* ALERT LIST */}
       <div className="alerts-list">
-        {filteredAlerts.map((alert) => (
+        {alerts.map((alert) => (
           <div key={alert.id} className="alert-card">
-
             <img src={alert.image} className="alert-image" alt="alert" />
 
             <div className="alert-info">
@@ -104,7 +113,7 @@ export default function Alerts() {
               </p>
             </div>
 
-            <span className={`alert-status badge-${alert.status.toLowerCase()}`}>
+            <span className={`alert-status badge-${alert.status.toLowerCase().replace(' ', '-')}`}>
               {alert.status}
             </span>
           </div>

@@ -1,31 +1,72 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Card from "../components/Card";
+import apiService from "../services/api";
 
 function Home() {
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchDashboardStats();
+  }, []);
+
+  const fetchDashboardStats = async () => {
+    try {
+      setLoading(true);
+      const data = await apiService.getDashboardStats();
+      setStats(data);
+      setError(null);
+    } catch (err) {
+      console.error('Error fetching dashboard stats:', err);
+      setError('Failed to load dashboard data');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="home-wrapper">
+        <h1 className="page-title">Dashboard</h1>
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="home-wrapper">
+        <h1 className="page-title">Dashboard</h1>
+        <p style={{ color: 'red' }}>{error}</p>
+      </div>
+    );
+  }
+
   const cards = [
     {
       title: "New Alerts Today",
-      value: "7",
-      subtitle: "+2 from yesterday",
-      type: "danger", // red tone
+      value: stats?.new_alerts_today?.toString() || "0",
+      subtitle: stats?.alerts_change || "",
+      type: "danger",
     },
     {
       title: "Total Hectares Saved",
-      value: "1,247",
-      subtitle: "+89 this month",
-      type: "success", // green tone
+      value: stats?.total_hectares_saved?.toLocaleString() || "0",
+      subtitle: stats?.hectares_change || "",
+      type: "success",
     },
     {
       title: "Response Time (avg)",
-      value: "23 min",
-      subtitle: "-5 min improvement",
-      type: "warning", // yellow tone
+      value: `${stats?.avg_response_time || 0} min`,
+      subtitle: stats?.response_time_change || "",
+      type: "warning",
     },
     {
       title: "Partners Notified",
-      value: "34",
-      subtitle: "KWS, NGOs, Communities",
-      type: "info", // blue tone
+      value: stats?.partners_notified?.toString() || "0",
+      subtitle: stats?.partners_info || "",
+      type: "info",
     },
   ];
 

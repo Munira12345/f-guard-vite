@@ -1,40 +1,80 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../Reports.css";
+import apiService from "../services/api";
 
 function Reports() {
   const [range, setRange] = useState("Month");
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const ranges = ["Week", "Month", "Year"];
 
-  const stats = [
+  useEffect(() => {
+    fetchReportStats();
+  }, [range]);
+
+  const fetchReportStats = async () => {
+    try {
+      setLoading(true);
+      const data = await apiService.getReportStats(range);
+      setStats(data);
+      setError(null);
+    } catch (err) {
+      console.error('Error fetching report stats:', err);
+      setError('Failed to load report data');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="reports-page">
+        <h1 className="reports-title">Reports & Analytics</h1>
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="reports-page">
+        <h1 className="reports-title">Reports & Analytics</h1>
+        <p style={{ color: 'red' }}>{error}</p>
+      </div>
+    );
+  }
+
+  const reportCards = [
     {
       title: "Total Alerts",
-      value: "342",
-      change: "↓ 12% from last period",
+      value: stats?.total_alerts?.toLocaleString() || "0",
+      change: stats?.alerts_change || "",
       changeColor: "#ff6b6b",
       icon: "📉",
       type: "danger",
     },
     {
       title: "Area Affected",
-      value: "1,247 ha",
-      change: "↓ 8% improvement",
+      value: stats?.area_affected || "0 ha",
+      change: stats?.area_change || "",
       changeColor: "#00d47e",
       icon: "📍",
       type: "success",
     },
     {
       title: "Avg Response",
-      value: "23 min",
-      change: "↓ 18% improvement",
+      value: stats?.avg_response || "0 min",
+      change: stats?.response_change || "",
       changeColor: "#00d47e",
       icon: "⏱️",
       type: "warning",
     },
     {
       title: "Resolved",
-      value: "89%",
-      change: "↑ 5% increase",
+      value: `${stats?.resolved_percentage || 0}%`,
+      change: stats?.resolved_change || "",
       changeColor: "#4ab0ff",
       icon: "📈",
       type: "info",
@@ -71,7 +111,7 @@ function Reports() {
 
       {/* Cards */}
       <div className="report-cards">
-        {stats.map((s, i) => (
+        {reportCards.map((s, i) => (
           <div key={i} className={`report-card report-${s.type}`}>
             <div className="report-card-icon">{s.icon}</div>
             <div>
