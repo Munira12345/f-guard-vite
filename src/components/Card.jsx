@@ -1,13 +1,11 @@
 import React from "react";
 
-function Card({ title, value, subtitle }) {
+export default function Card({ title, value, subtitle, type = "default" }) {
   return (
-    <div className="card">
-      <h3>{title}</h3>
-      <p className="value">{value}</p>
-      <p className="subtitle">{subtitle}</p>
+    <div className={`card card-${type}`}>
+      <p className="card-title">{title}</p>
+      <p className="card-value">{value}</p>
+      <p className="card-subtitle">{subtitle}</p>
     </div>
   );
 }
-
-export default Card;

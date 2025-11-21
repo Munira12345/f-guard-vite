@@ -1,83 +1,78 @@
+/* GLOBAL DARK THEME ----------------------------------- */
 body, html, #root {
   margin: 0;
   padding: 0;
-  font-family: Arial, sans-serif;
   height: 100%;
-  background-color: #d0f0c0; /* light green background */
-}
-
-.app {
-  display: flex;
-  height: 100vh;
-}
-
-.sidebar {
-  width: 220px;
-  background-color: white;
-  padding: 20px;
-  box-shadow: 2px 0 6px rgba(0,0,0,0.1);
-}
-
-.sidebar-title {
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-}
-
-.sidebar li {
-  padding: 10px 5px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  border-radius: 4px;
-  margin-bottom: 5px;
-}
-
-.sidebar li.active {
-  background-color: #c6e2b3; /* slightly darker green highlight */
-}
-
-.sidebar .icon {
-  margin-right: 10px;
-}
-
-.main-content {
-  flex: 1;
-  padding: 20px;
-  overflow-y: auto;
+  font-family: "Inter", Arial, sans-serif;
+  background-color: #0b1215; /* deep charcoal */
+  color: #e5f3e7; /* soft mint-tinted white */
 }
 
 .page-title {
   font-size: 1.8rem;
   margin-bottom: 20px;
+  color: #eaf9ef;
 }
 
+/* CARDS ------------------------------------------------ */
 .cards-container {
   display: flex;
-  gap: 20px;
   flex-wrap: wrap;
+  gap: 20px;
 }
 
 .card {
-  background-color: white;
-  border-radius: 8px;
-  padding: 15px;
-  flex: 1 1 200px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  background: #0f1a1e;               /* dark slate */
+  padding: 20px;
+  border-radius: 14px;
+  flex: 1 1 230px;
+  box-shadow: 0 0 25px rgba(0, 255, 180, 0.05);
+  transition: 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.card .value {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin: 5px 0;
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 30px rgba(0, 255, 180, 0.12);
 }
 
-.card .subtitle {
-  color: gray;
+.card-title {
+  opacity: 0.8;
+  font-size: 0.95rem;
+}
+
+.card-value {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-top: 5px;
+}
+
+.card-subtitle {
+  margin-top: 6px;
   font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+/* CARD COLOR VARIANTS ---------------------------------- */
+.card-danger {
+  border-left: 4px solid #ff4c4c;  /* red */
+  box-shadow: 0 0 20px rgba(255, 70, 70, 0.15);
+}
+
+.card-success {
+  border-left: 4px solid #00d47e; /* green */
+  box-shadow: 0 0 20px rgba(0, 255, 150, 0.15);
+}
+
+.card-warning {
+  border-left: 4px solid #ffcf4b; /* yellow */
+  box-shadow: 0 0 20px rgba(255, 200, 50, 0.15);
+}
+
+.card-info {
+  border-left: 4px solid #4ab0ff; /* blue */
+  box-shadow: 0 0 20px rgba(70, 160, 255, 0.15);
+}
+.card-default {
+  border-left: 4px solid #3f3f3f;
 }
