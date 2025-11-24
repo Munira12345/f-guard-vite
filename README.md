@@ -1,9 +1,9 @@
-## ForestGuard — AI-Powered Forest Monitoring System
+## ForestGuard : Forest Monitoring System
 
 ForestGuard is an integrated platform that uses AI + satellite imagery to detect deforestation events in real time, generate visual insights, and support sustainable forest management in Kenya.
 This project was built for the HACKATHON (Track 2).
 
- Slides & Presentation
+# Slides & Presentation
 
 A full breakdown of the system, workflow, and demo can be found in the slides here:
 
