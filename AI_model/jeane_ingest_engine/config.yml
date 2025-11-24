@@ -1,0 +1,19 @@
+s3:
+  bucket: your-bucket-name
+  prefix: ingested/
+  aws_access_key_id: YOUR_KEY
+  aws_secret_access_key: YOUR_SECRET
+  region: us-east-1
+postgres:
+  host: localhost
+  port: 5432
+  database: ingest_db
+  user: ingest_user
+  password: ingest_pass
+tiles:
+  tile_size: 512
+  overlap: 0
+preprocess:
+  target_crs: "EPSG:3857"
+  cloud_masking: true
+  atmospheric_correction: false
