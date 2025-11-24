@@ -105,7 +105,7 @@ AI / Analysis: Satellite image processing, Custom tree-cover change detection mo
 
 # Why ForestGuard Matters
 
-Gives Kenya its first near real-time, AI-powered deforestation tracking system
+Gives Kenya a real-time, AI-powered deforestation tracking system
 Reduces response time to illegal logging
 Supports climate action and forest conservation
 Provides accurate insights for NGOs, KEFRI, KFS, researchers, and policymakers
